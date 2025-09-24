@@ -1,9 +1,11 @@
 const express = require("express");
 const router = require("./Router/authRoute");
-const dotenv = require("dotenv");
 const connectDb = require("./Utils/db");
 const app = express();
-dotenv.config();
+
+// const dotenv = require("dotenv");
+// dotenv.config();
+require("dotenv").config();      // ---> Another method
 
 app.use("/", router);
 
