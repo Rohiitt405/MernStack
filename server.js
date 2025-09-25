@@ -7,7 +7,10 @@ const app = express();
 // dotenv.config();
 require("dotenv").config();      // ---> Another method
 
-app.use("/", router);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/auth", router);
 
 const PORT = process.env.PORT;
 
