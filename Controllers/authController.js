@@ -50,7 +50,11 @@ const login = async (req, res) => {
         if (!userExist) {
             return res.status(400).json({ msg: "Invalid Credential" });
         }
-        const user = await bcrypt.compare(password, userExist.password);
+        // ------> without Premethod
+        // const user = await bcrypt.compare(password, userExist.password);
+
+        // ------> With Premethod
+        const user = await userExist.comparePassword(password);
 
         if (user) {
             res.status(200).json({

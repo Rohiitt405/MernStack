@@ -46,9 +46,13 @@ userSchema.pre("save", async function () {
     }
 });
 
+// -------> Password compare functionalty
+userSchema.methods.comparePassword = async function (password) {
+    return bcrypt.compare(password, this.password);
+};
+
 // ------->JWT 
 userSchema.methods.generateToken =  function () {
-    console.log("IM token");;
     try {
         return jwt.sign({
             userId: this._id.toString(),
