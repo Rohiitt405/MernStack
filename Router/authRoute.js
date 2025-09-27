@@ -23,5 +23,6 @@ router.route("/register").get((req, res) => {
 // ------> With using Controllers
 router.route("/").get(authControllers.home);
 router.route("/register").post(authControllers.register);
+router.route("/login").post(authControllers.login);
 
 module.exports = router;
