@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const authControllers = require("../Controllers/authController")
+const validate = require("../Middleware/ValidateMiddleware");
+const signupSchema = require("../Validators/authValidators");
 
 /*
 app.get('/', (req, res) => {
@@ -22,7 +24,9 @@ router.route("/register").get((req, res) => {
 
 // ------> With using Controllers
 router.route("/").get(authControllers.home);
-router.route("/register").post(authControllers.register);
+router
+  .route("/register")
+  .post(validate(signupSchema), authControllers.register);
 router.route("/login").post(authControllers.login);
 
 module.exports = router;
