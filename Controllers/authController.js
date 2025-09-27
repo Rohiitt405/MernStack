@@ -1,5 +1,6 @@
-const User = require("../Models/useModel");
+const User = require("../Models/userModel");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const home = async (req, res) => {
     try {
@@ -11,21 +12,29 @@ const home = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        console.log(req.body);
         const { username, email, phone, password } = req.body;
         const userExist = await User.findOne({email});
 
         if(userExist){
-            return res.status(400).json({msg: "email already exits"});
+            return res.status(400).json({msg: "Email already exits"});
         }
 
-        // ---> skip this we will use PreMethod for this hashing
-        const saltRound = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, saltRound);
+        // const saltRound = await bcrypt.genSalt(10);
+        // const hashedPassword = await bcrypt.hash(password, saltRound);
 
-        const userCreated = await User.create({username, email, phone, password:hashedPassword/**/});
-
-        res.status(201).json({msg:userCreated});
+        const userCreated = await User.create({
+            username, 
+            email, 
+            phone, 
+            password/*:hashedPassword*/
+        });
+        
+        res.status(201).json({
+            msg: "Registration successful", 
+            token: await userCreated.generateToken(),
+            userId: userCreated._id.toString(),
+        });
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({msg:"Internal server Error"});
