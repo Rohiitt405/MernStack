@@ -10,7 +10,7 @@ require("dotenv").config();      // ---> Another method
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/auth", router);
+app.use("/", router);
 
 const PORT = process.env.PORT;
 
