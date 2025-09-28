@@ -6,9 +6,20 @@ const validate = (schema) => async (req, res, next) => {
         req.body = parseBody;
         next();
     } catch (err) {
-        const message = err.error[0].message;
-        console.log(message);
-        res.status(400).json({msg: message});
+        const status = 422;
+        const message = 'Fil the Input properly';
+        const extraDetails = err.issues[0].message;
+
+        const error = {
+            status, message, extraDetails
+        };
+
+        // ------> this will print the status error same through by the validator same as postman 
+        // console.log(error);
+        next(error);
+        
+        // ------> without Express error handlers
+        // res.status(400).json({msg: message});
     }
 };
 

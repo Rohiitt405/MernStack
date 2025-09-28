@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const { string } = require('zod');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -13,7 +14,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     phone: {
-        type: Number,
+        type: String,
         required: true,
     },
     password: {
@@ -31,7 +32,8 @@ const userSchema = new mongoose.Schema({
 // ------> bcrypt
 userSchema.pre("save", async function () {
     const user = this;
-    console.log("actual data", this);
+    // -----> this will print the whole entered details in terminal
+    // console.log("actual data", this);
 
     if (!user.isModified("password")) {
         return next();
@@ -42,7 +44,7 @@ userSchema.pre("save", async function () {
         const hashedPassword = await bcrypt.hash(user.password, saltRound);
         user.password = hashedPassword;
     } catch (error) {
-        return next(error);
+        next(error);
     }
 });
 
